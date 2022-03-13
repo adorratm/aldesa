@@ -81,7 +81,7 @@ class Products extends MY_Controller
     public function save()
     {
         $data = rClean($this->input->post());
-        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "discount" && checkEmpty($data)["key"] !== "price" && checkEmpty($data)["key"] !== "external_url" && checkEmpty($data)["key"] !== "content" && checkEmpty($data)["key"] !== "company_code" && checkEmpty($data)["key"] !== "stock") :
+        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "discount" && checkEmpty($data)["key"] !== "price" && checkEmpty($data)["key"] !== "external_url" && checkEmpty($data)["key"] !== "content" && checkEmpty($data)["key"] !== "features" && checkEmpty($data)["key"] !== "description" && checkEmpty($data)["key"] !== "company_code" && checkEmpty($data)["key"] !== "stock") :
             $key = checkEmpty($data)["key"];
             echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ürün Kaydı Yapılırken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
         else :
@@ -100,9 +100,9 @@ class Products extends MY_Controller
             endif;
             $data["title"] = stripslashes($data["title"]);
             $data["url"] = seo($data["title"]);
-            //$data["content"] = $_POST["content"];
+            $data["content"] = $_POST["content"];
             $data["description"] = $_POST["description"];
-            //$data["features"] = $_POST["features"];
+            $data["features"] = $_POST["features"];
             $data["isActive"] = 1;
             $data["rank"] = $getRank + 1;
             $insert = $this->product_model->add($data);
@@ -139,14 +139,15 @@ class Products extends MY_Controller
     public function update($id)
     {
         $data = $this->input->post();
-        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "discount" && checkEmpty($data)["key"] !== "price" && checkEmpty($data)["key"] !== "external_url" && checkEmpty($data)["key"] !== "content" && checkEmpty($data)["key"] !== "company_code" && checkEmpty($data)["key"] !== "stock") :
+        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "discount" && checkEmpty($data)["key"] !== "price" && checkEmpty($data)["key"] !== "external_url" && checkEmpty($data)["key"] !== "content" && checkEmpty($data)["key"] !== "features" && checkEmpty($data)["key"] !== "description" && checkEmpty($data)["key"] !== "company_code" && checkEmpty($data)["key"] !== "stock") :
             $key = checkEmpty($data)["key"];
             echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ürün Güncelleştirilirken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
         else :
             $product = $this->product_model->get(["id" => $id]);
             $data["title"] = stripslashes($data["title"]);
             $data["url"] = seo($data["title"]);
-            //$data["content"] = $_POST["content"];
+            $data["content"] = $_POST["content"];
+            $data["features"] = $_POST["features"];
             $data["description"] = $_POST["description"];
             $data["banner_url"] = $product->banner_url;
             if (!empty($_FILES["banner_url"]["name"])) :

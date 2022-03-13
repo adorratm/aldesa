@@ -1,33 +1,41 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
-<!-- Start Page Banner -->
-<div class="page-banner-area">
+<div class="inner-banner inner-bg2">
     <img width="1920" height="400" data-src="<?= !empty($products_category->banner_url) ? get_picture("product_categories_v", $products_category->banner_url) : get_picture("settings_v", $settings->product_logo) ?>" class="img-fluid w-100 lazyload" alt="<?= strto("lower|upper", lang("products")) ?>">
     <div class="container">
-        <div class="page-banner-content">
-            <h2><?= strto("lower|upper", (!empty($products_category) ? $products_category->title : lang("products"))) ?></h2>
+        <div class="inner-title text-center">
+            <h3><?= strto("lower|upper", (!empty($products_category) ? $products_category->title : lang("products"))) ?></h3>
+            <ul>
+                <li><a rel="dofollow" href="<?= base_url(); ?>" title="<?= strto("lower|upper", lang("home")) ?>"><?= strto("lower|upper", lang("home")) ?></a></li>
+                <li><i class="fa fa-angle-right"></i></li>
+                <?php if (!empty($products_category)) : ?>
+                    <li><a href="<?= base_url(lang("routes_products")); ?>" rel="dofollow" title="<?= strto("lower|upper", lang("products")) ?>"><?= strto("lower|upper", lang("products")) ?></a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li><?= strto("lower|upper", $products_category->title) ?></li>
+                <?php else : ?>
+                    <li><?= strto("lower|upper", lang("products")) ?></li>
+                <?php endif ?>
+            </ul>
         </div>
     </div>
 </div>
-<!-- End Page Banner -->
 
 
-<div class="blog-area pt-100 pb-100">
+
+<div class="product-area pt-100 pb-70">
     <div class="container">
-        <div class="row">
+        <div class="row pt-45">
             <?php if (!empty($this->uri->segment(3)) && !is_numeric($this->uri->segment(3))) : ?>
                 <?php if (!empty($products)) : ?>
                     <?php foreach ($products as $key => $value) : ?>
                         <?php if (strtotime($value->sharedAt) <= strtotime("now")) : ?>
                             <div class="col-sm-6 col-lg-4 mb-3">
-                                <div class="single-blog h-100">
-                                    <div class="blog-image">
-                                        <a rel="dofollow" href="<?= base_url(lang("routes_products") . "/" . lang("routes_product") . "/{$value->url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>">
-                                            <img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("products_v", $value->img_url) ?>" alt="<?= $value->title ?>" class="img-fluid lazyload">
-                                        </a>
-                                    </div>
-                                    <div class="blog-content">
-                                        <h3>
-                                            <a rel="dofollow" href="<?= base_url(lang("routes_products") . "/" . lang("routes_product") . "/{$value->url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>"><?= $value->title ?></a>
+                                <div class="single-product h-100">
+                                    <a rel="dofollow" href="<?= base_url(lang("routes_products") . "/" . lang("routes_product") . "/{$value->url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>">
+                                        <img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("products_v", $value->img_url) ?>" alt="<?= $value->title ?>" class="img-fluid lazyload">
+                                    </a>
+                                    <div class="product-content">
+                                        <h3 class="text-center">
+                                            <a class="text-center" rel="dofollow" href="<?= base_url(lang("routes_products") . "/" . lang("routes_product") . "/{$value->url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>"><?= $value->title ?></a>
                                         </h3>
                                         <span>
                                             <?php $i = 1 ?>
@@ -64,15 +72,13 @@
                 <?php if (!empty($categories)) : ?>
                     <?php foreach ($categories as $key => $value) : ?>
                         <div class="col-sm-6 col-lg-4 mb-3">
-                            <div class="single-blog h-100">
-                                <div class="blog-image">
-                                    <a rel="dofollow" href="<?= base_url(lang("routes_products")  . "/{$value->seo_url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>">
-                                        <img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("product_categories_v", $value->img_url) ?>" alt="<?= $value->title ?>" class="img-fluid lazyload">
-                                    </a>
-                                </div>
-                                <div class="blog-content">
-                                    <h3>
-                                        <a rel="dofollow" href="<?= base_url(lang("routes_products") . "/{$value->seo_url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>"><?= $value->title ?></a>
+                            <div class="single-product h-100">
+                                <a rel="dofollow" href="<?= base_url(lang("routes_products")  . "/{$value->seo_url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>">
+                                    <img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("product_categories_v", $value->img_url) ?>" alt="<?= $value->title ?>" class="img-fluid lazyload">
+                                </a>
+                                <div class="product-content">
+                                    <h3 class="text-center">
+                                        <a class="text-center" rel="dofollow" href="<?= base_url(lang("routes_products") . "/{$value->seo_url}" . (!empty($_GET["key"]) ? "?key=" . clean($_GET["key"]) : null)) ?>" title="<?= $value->title ?>"><?= $value->title ?></a>
                                     </h3>
                                 </div>
                             </div>

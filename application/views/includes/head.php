@@ -1135,7 +1135,7 @@
             position: relative;
             background-position: center center;
             background-size: cover;
-            top:80px;
+            top: 80px;
             margin-bottom: 80px;
         }
 
@@ -2136,6 +2136,7 @@
         .product-detls-image {
             margin-bottom: 30px;
             border: 1px dashed #eeeeee;
+            padding: 5px;
         }
 
         .product-detls-image:hover {
@@ -2369,7 +2370,6 @@
         }
 
         .products-tabs-decs {
-            max-width: 840px;
             text-align: left;
             margin-left: auto;
             margin-right: auto;
@@ -5368,6 +5368,7 @@
         ====================================*/
         .footer-area {
             background-color: #F2F2F5;
+            border-top: 1px solid #ddd;
         }
 
         .footer-widget {
@@ -7454,6 +7455,27 @@
 
         .border-radius {
             border-radius: 30px !important;
+        }
+
+        .carousel-indicators [data-bs-target] {
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            width: auto;
+            height: auto;
+            text-indent: unset
+        }
+
+        .owl-thumbs .single-product-thumbb.active .top-img {
+            border: 3px solid #2f3192;
+            border-radius: .25rem !important
+        }
+
+        .carousel-dark .carousel-indicators [data-bs-target] {
+            background-color: unset !important
+        }
+
+        .carousel-indicators {
+            z-index: 1 !important
         }
     </style>
 

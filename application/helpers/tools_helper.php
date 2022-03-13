@@ -854,6 +854,26 @@ function in_parentt($in_parent = null, $lang = null, $store_all_id = null)
             $html .= '<li class="nav-item">';
             $html .= '<a rel="dofollow" ' .
                 ($t->uri->segment(3) == $value->seo_url ? "class='active nav-link'" : "class='nav-link'") . ' href="' . base_url(lang("routes_products") . "/{$value->seo_url}") . '" title="' . $value->title . '">' . $value->title . '</a>';
+            $wheres["p.isActive"] = 1;
+            $wheres["pi.isCover"] = 1;
+            $wheres["p.isWeddingProduct"] = 0;
+            $wheres["p.lang"] = $lang;
+            $wheres["pc.id"] = $value->id;
+            $joins = ["products_w_categories pwc" => ["p.id = pwc.product_id", "left"], "product_categories pc" => ["pwc.category_id = pc.id", "left"], "product_variation_groups pvg" => ["p.id = pvg.product_id", "left"], "product_images pi" => ["pi.product_id = p.id", "left"]];
+            $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
+            $distinct = true;
+            $groupBy = ["p.id", "pwc.product_id"];
+            $products = $t->general_model->get_all("products p", $select, "p.rank ASC", $wheres, [], $joins, [], [], $distinct, $groupBy);
+            if (!empty($products)) :
+                $html .= '<ul class="dropdown-menu">';
+                foreach ($products as $pKey => $pValue) :
+                    $html .= '<li class="nav-item">';
+                    $html .= '<a rel="dofollow" ' .
+                        ($t->uri->segment(3) == $pValue->url ? "class='active nav-link'" : "class='nav-link'") . ' href="' . base_url(lang("routes_products") . "/" . lang("routes_product") . "/{$pValue->url}") . '" title="' . $pValue->title . '">' . $pValue->title . '</a>';
+                    $html .= '</li>';
+                endforeach;
+                $html .= '</ul>';
+            endif;
             $html .= in_parentt($value->id, $lang, $store_all_id);
             $html .= "</li>";
         endforeach;
@@ -951,15 +971,9 @@ function split_name($name = null)
 function increaseViewer($product_id = 0)
 {
     $t = &get_instance();
-    $ip_address = $t->input->ip_address();
-    $countResult = $t->general_model->rowCount("product_views", ["ip_address" => $ip_address, "product_id" => $product_id]);
-    if ($countResult == 0) :
-        $t->general_model->add("product_views", ["ip_address" => $ip_address, "visits" => 1, "product_id" => $product_id]);
-    else :
-        $t->db->where(["ip_address" => $ip_address, "product_id" => $product_id]);
-        $t->db->set("visits", "visits+1", FALSE);
-        $t->db->update("product_views");
-    endif;
+    $t->db->where(["id" => $product_id]);
+    $t->db->set("hit", "hit+1", FALSE);
+    $t->db->update("products");
 }
 
 function show_header_categories($lang = 'tr')

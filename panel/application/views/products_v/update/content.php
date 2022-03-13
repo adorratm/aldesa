@@ -70,14 +70,7 @@
             </div>
         </div>
     </div>
-    <div class="row d-none">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <div class="form-group">
-                <label>Kısa Açıklama</label>
-                <textarea disabled name="content" class="m-0 tinymce" required><?= !empty($item->content) ? $item->content : null; ?></textarea>
-            </div>
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <div class="form-group">
@@ -86,11 +79,19 @@
             </div>
         </div>
     </div>
-    <div class="row d-none">
+    <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <div class="form-group">
                 <label>Özellikler</label>
-                <textarea disabled name="features" class="m-0 tinymce" required><?= !empty($item->features) ? $item->features : null; ?></textarea>
+                <textarea name="features" class="m-0 tinymce" required><?= !empty($item->features) ? $item->features : null; ?></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="form-group">
+                <label>Kutu İçeriği</label>
+                <textarea name="content" class="m-0 tinymce" required><?= !empty($item->content) ? $item->content : null; ?></textarea>
             </div>
         </div>
     </div>

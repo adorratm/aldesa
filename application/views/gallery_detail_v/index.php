@@ -7,7 +7,7 @@
             <ul>
                 <li><a rel="dofollow" href="<?= base_url(); ?>" title="<?= strto("lower|upper", lang("home")) ?>"><?= strto("lower|upper", lang("home")) ?></a></li>
                 <li><i class="fa fa-angle-right"></i></li>
-                <li><?= strto("lower|upper", $gallery->title) ?>/li>
+                <li><?= strto("lower|upper", $gallery->title) ?></li>
             </ul>
         </div>
     </div>
@@ -36,8 +36,7 @@
                         <?php elseif ($gallery->gallery_type == "video_urls") : ?>
                             <?= htmlspecialchars_decode($value->url) ?>
                         <?php else : ?>
-                            <?php list($width, $height) = getimagesize(get_picture("galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}", $value->url)); ?>
-                            <a class="border-radius" rel="dofollow" href="<?= get_picture("galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}", $value->url) ?>" title="<?= lang("viewItem") ?>" itemprop="contentUrl" data-size="<?= $width ?>x<?= $height ?>">
+                            <a class="border-radius" rel="dofollow" href="<?= get_picture("galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}", $value->url) ?>" title="<?= lang("viewItem") ?>" itemprop="contentUrl" data-size="1000x1000">
                                 <picture>
                                     <img width="1920" height="1280" loading="lazy" class="img-fluid border-radius lazyload w-100" src="<?= get_picture("galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}", $value->url) ?>" data-src="<?= get_picture("galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}", $value->url) ?>" alt="<?= $value->title ?>" itemprop="thumbnail" width="457" height="315">
                                 </picture>

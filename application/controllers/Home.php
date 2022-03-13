@@ -176,7 +176,7 @@ class Home extends MY_Controller
         $wheres["p.isWeddingProduct"] = 0;
         $wheres["p.lang"] = $this->viewData->lang;
         $joins = ["products_w_categories pwc" => ["p.id = pwc.product_id", "left"], "product_categories pc" => ["pwc.category_id = pc.id", "left"], "product_variation_groups pvg" => ["p.id = pvg.product_id", "left"], "product_images pi" => ["pi.product_id = p.id", "left"]];
-        $select = "(SELECT SUM(visits) FROM product_views pv WHERE pv.product_id = p.id ) AS visits,GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
+        $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
         $distinct = true;
         $groupBy = ["p.id", "pwc.product_id"];
         */
@@ -208,7 +208,7 @@ class Home extends MY_Controller
          * Get Mostly Viewed Products
          */
         /*
-        $this->viewData->mostlyViewedProducts = $this->general_model->get_all("products p", $select, "visits DESC", $wheres, [], $joins, [10], [], $distinct, $groupBy);
+        $this->viewData->mostlyViewedProducts = $this->general_model->get_all("products p", $select, "hit DESC", $wheres, [], $joins, [10], [], $distinct, $groupBy);
         */
         //$this->viewData->stories = $this->general_model->get_all("stories", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang]);
         //$this->viewData->story_items = $this->general_model->get_all("story_items", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang]);
@@ -701,12 +701,11 @@ class Home extends MY_Controller
         $wheres["p.lang"] = $this->viewData->lang;
         $joins = ["products_w_categories pwc" => ["p.id = pwc.product_id", "left"], "product_categories pc" => ["pwc.category_id = pc.id", "left"], "product_variation_groups pvg" => ["p.id = pvg.product_id", "left"], "product_images pi" => ["pi.product_id = p.id", "left"]];
 
-        $select = "(SELECT SUM(visits) FROM product_views pv WHERE pv.product_id = p.id ) AS visits,GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isActive,p.isDiscount isDiscount,p.sharedAt,IFNULL(pvg.price,p.price) AS newPrice,(CASE when p.isDiscount = 1 then IFNULL(pvg.price,p.price) - (IFNULL(pvg.price,p.price) * IFNULL(pvg.discount,p.discount) / 100) else IFNULL(pvg.price,p.price) end) AS discountedPrice";
+        $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isActive,p.isDiscount isDiscount,p.sharedAt,IFNULL(pvg.price,p.price) AS newPrice,(CASE when p.isDiscount = 1 then IFNULL(pvg.price,p.price) - (IFNULL(pvg.price,p.price) * IFNULL(pvg.discount,p.discount) / 100) else IFNULL(pvg.price,p.price) end) AS discountedPrice";
         $distinct = true;
         $groupBy = ["p.id", "pwc.product_id"];
         /*
         if (!empty($_GET["isViewed"])) :
-            $joins["product_views pv"] = ["p.id = pv.product_id", "right"];
             array_push($groupBy, "pv.product_id");
             array_push($groupBy, "pv.id");
         endif;
@@ -816,7 +815,7 @@ class Home extends MY_Controller
         if (!empty($category_id)) :
             $wheres["pwc.category_id"] = $category_id;
         endif;*/
-        //$select = "(SELECT SUM(visits) FROM product_views pv WHERE pv.product_id = p.id ) AS visits,GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
+        //$select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
         /**
          * Get Suggested Products
          */
@@ -843,7 +842,7 @@ class Home extends MY_Controller
         //if (!empty($category->id)) :
         //    $wherein = ["pc.id" => explode(",", $category->id)];
         //endif;
-        //$this->viewData->mostlyViewedProducts = $this->general_model->get_all("products p", $select, "visits DESC", $wheres, [], $joins, [10], $wherein, $distinct, $groupBy);
+        //$this->viewData->mostlyViewedProducts = $this->general_model->get_all("products p", $select, "hit DESC", $wheres, [], $joins, [10], $wherein, $distinct, $groupBy);
 
         /**
          * Meta
@@ -873,7 +872,7 @@ class Home extends MY_Controller
         $wheres["pi.isCover"] = 1;
         $wheres["p.lang"] = $this->viewData->lang;
         $joins = ["products_w_categories pwc" => ["p.id = pwc.product_id", "left"], "product_categories pc" => ["pwc.category_id = pc.id", "left"], "product_variation_groups pvg" => ["p.id = pvg.product_id", "left"], "product_images pi" => ["pi.product_id = p.id", "left"]];
-        $select = "(SELECT SUM(visits) FROM product_views pv WHERE pv.product_id = p.id ) AS visits,GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,p.description,p.content,p.features,p.external_url,IFNULL(pvg.price,p.price) price,p.vat vat,p.vatRate vatRate,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isActive,p.isDiscount isDiscount,p.sharedAt,IFNULL(pvg.price,p.price) AS newPrice";
+        $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,p.description,p.content,p.features,p.external_url,IFNULL(pvg.price,p.price) price,p.vat vat,p.vatRate vatRate,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isActive,p.isDiscount isDiscount,p.sharedAt,IFNULL(pvg.price,p.price) AS newPrice";
         $distinct = true;
         $groupBy = ["p.id", "pwc.product_id"];
         $wheres['p.url'] =  $seo_url;
@@ -950,7 +949,7 @@ class Home extends MY_Controller
                 endforeach;
             endif;
             $this->viewData->pselecteds = $pselecteds;
-            $select = "(SELECT SUM(visits) FROM product_views pv WHERE pv.product_id = p.id ) AS visits,GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
+            $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
             $wheres = ["p.isActive" => 1, "p.id!=" => $this->viewData->product->id, "p.lang" => $this->viewData->lang, "pi.isCover" => 1];
             /**
              * Get Suggested Products
@@ -977,7 +976,7 @@ class Home extends MY_Controller
             /**
              * Get Mostly Viewed Products
              */
-            $this->viewData->mostlyViewedProducts = $this->general_model->get_all("products p", $select, "visits DESC", $wheres, [], $joins, [10], ["pc.id" => explode(",", $this->viewData->product->category_ids)], $distinct, $groupBy);
+            $this->viewData->mostlyViewedProducts = $this->general_model->get_all("products p", $select, "hit DESC", $wheres, [], $joins, [10], ["pc.id" => explode(",", $this->viewData->product->category_ids)], $distinct, $groupBy);
             /**
              * Meta
              */
@@ -3091,7 +3090,7 @@ class Home extends MY_Controller
         $wheres["p.isWeddingProduct"] = 0;
         $wheres["p.lang"] = $this->viewData->lang;
         $joins = ["products_w_categories pwc" => ["p.id = pwc.product_id", "left"], "product_categories pc" => ["pwc.category_id = pc.id", "left"], "product_variation_groups pvg" => ["p.id = pvg.product_id", "left"], "product_images pi" => ["pi.product_id = p.id", "left"]];
-        $select = "(SELECT SUM(visits) FROM product_views pv WHERE pv.product_id = p.id ) AS visits,GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
+        $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
         $distinct = true;
         $groupBy = ["p.id", "pwc.product_id"];
         $products = $this->general_model->get_all("products p", $select, "p.id DESC", $wheres, [], $joins, [], [], $distinct, $groupBy);
@@ -3204,7 +3203,7 @@ class Home extends MY_Controller
         $wheres["p.isWeddingProduct"] = 0;
         $wheres["p.lang"] = $this->viewData->lang;
         $joins = ["products_w_categories pwc" => ["p.id = pwc.product_id", "left"], "product_categories pc" => ["pwc.category_id = pc.id", "left"], "product_variation_groups pvg" => ["p.id = pvg.product_id", "left"], "product_images pi" => ["pi.product_id = p.id", "left"]];
-        $select = "(SELECT SUM(visits) FROM product_views pv WHERE pv.product_id = p.id ) AS visits,GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
+        $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
         $distinct = true;
         $groupBy = ["p.id", "pwc.product_id"];
         $products = $this->general_model->get_all("products p", $select, "p.id DESC", $wheres, [], $joins, [], [], $distinct, $groupBy);
