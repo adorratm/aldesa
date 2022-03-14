@@ -526,7 +526,7 @@
             background-color: #FFF6F1;
             top: 0;
             left: 0;
-            z-index: inherit;
+            z-index: 2;
             padding: 0;
             width: 100%;
             height: auto;

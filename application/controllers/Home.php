@@ -41,13 +41,13 @@ class Home extends MY_Controller
         $this->viewData->page_urls = [];
         $this->viewData->lang = (!empty($this->uri->segment(1) && mb_strlen($this->uri->segment(1)) == 2) ? $this->uri->segment(1) : (!empty(get_cookie("lang")) ? get_cookie("lang") : "tr"));
         $this->viewData->settings = $this->general_model->get("settings", null, ["isActive" => 1, "lang" => $this->viewData->lang]);
-        /*$allLanguages = $this->general_model->get_all("settings", null, "rank ASC", ["isActive" => 1]);
+        $allLanguages = $this->general_model->get_all("settings", null, "rank ASC", ["isActive" => 1]);
         $languages = [];
         if (!empty($allLanguages)) :
             foreach ($allLanguages as $key => $value) :
                 array_push($languages, $value->lang);
             endforeach;
-        endif;*/
+        endif;
         $locales = $this->general_model->get("languages", null, ["code" => strto("lower", $this->viewData->lang)]);
         setlocale(LC_ALL, $locales->code . "_" . (strto("lower|upper", $locales->code)));
         $currency = $this->general_model->get("countries", null, ["code" => strto("lower|upper", $this->viewData->lang)]);
@@ -62,7 +62,7 @@ class Home extends MY_Controller
         $this->viewData->footer_menus = $this->show_tree('FOOTER', $this->viewData->lang);
         $this->viewData->footer_menus2 = $this->show_tree('FOOTER2', $this->viewData->lang);
         $this->viewData->footer_categories = $this->general_model->get_all("product_categories", null, "rank ASC", ["isActive" => 1, "top_id" => 0, "lang" => $this->viewData->lang]);
-        //$this->viewData->languages = $languages;
+        $this->viewData->languages = $languages;
         /**
          * Menu Categories
          */

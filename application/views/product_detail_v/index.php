@@ -539,7 +539,7 @@
         </div>
     </div>
 </div>
-<?php if (!empty(clean($product->features)) && !empty(clean($product->content))) : ?>
+<?php if (!empty(clean($product->features)) || !empty(clean($product->content))) : ?>
     <div class="product-tab pt-100 pb-70">
         <div class="container">
             <div class="row">

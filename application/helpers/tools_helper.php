@@ -864,15 +864,17 @@ function in_parentt($in_parent = null, $lang = null, $store_all_id = null)
             $distinct = true;
             $groupBy = ["p.id", "pwc.product_id"];
             $products = $t->general_model->get_all("products p", $select, "p.rank ASC", $wheres, [], $joins, [], [], $distinct, $groupBy);
-            if (!empty($products)) :
-                $html .= '<ul class="dropdown-menu">';
-                foreach ($products as $pKey => $pValue) :
-                    $html .= '<li class="nav-item">';
-                    $html .= '<a rel="dofollow" ' .
-                        ($t->uri->segment(3) == $pValue->url ? "class='active nav-link'" : "class='nav-link'") . ' href="' . base_url(lang("routes_products") . "/" . lang("routes_product") . "/{$pValue->url}") . '" title="' . $pValue->title . '">' . $pValue->title . '</a>';
-                    $html .= '</li>';
-                endforeach;
-                $html .= '</ul>';
+            if (empty($t->general_model->get_all("product_categories", "title,seo_url,id,top_id", "rank ASC", ["top_id" => $value->id, "isActive" => 1, "lang" => $lang]))) :
+                if (!empty($products)) :
+                    $html .= '<ul class="dropdown-menu">';
+                    foreach ($products as $pKey => $pValue) :
+                        $html .= '<li class="nav-item">';
+                        $html .= '<a rel="dofollow" ' .
+                            ($t->uri->segment(3) == $pValue->url ? "class='active nav-link'" : "class='nav-link'") . ' href="' . base_url(lang("routes_products") . "/" . lang("routes_product") . "/{$pValue->url}") . '" title="' . $pValue->title . '">' . $pValue->title . '</a>';
+                        $html .= '</li>';
+                    endforeach;
+                    $html .= '</ul>';
+                endif;
             endif;
             $html .= in_parentt($value->id, $lang, $store_all_id);
             $html .= "</li>";
