@@ -24,8 +24,14 @@
         <div class="row <?= ($gallery->gallery_type != "files" ? "gallery-slider" : null) ?>" <?= ($gallery->gallery_type != "files" ? "itemscope" : null) ?>>
             <?php foreach ($gallery_items as $key => $value) : ?>
                 <?php if ($gallery->gallery_type == "files") : ?>
-                    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3">
-                        <a rel="dofollow" href="<?= get_picture("galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}", $value->url) ?>" alt="<?= $value->title ?>" download><i class="bx bx-cloud-download bx-2x"></i> <?= $value->url ?></a>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 align-align-self-stretch align-items-stretch align-content-stretch mb-3">
+                        <?php $extension = pathinfo(FCPATH . "galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}/" . $value->url)["extension"] ?>
+                        <a class="text-center fs-5 p-3 border align-align-self-stretch align-items-stretch align-content-stretch d-flex flex-column justify-content-center h-100 w-100" rel="dofollow" href="<?= get_picture("galleries_v/{$gallery->gallery_type}/{$gallery->folder_name}", $value->url) ?>" alt="<?= $value->title ?>" <?=(!empty($extension) && $extension != "pdf" ? "download='".(!empty($value->title) ? $value->title . "." . $extension : null)."'": "target='_blank'")?>>
+                            <?php if (!empty($value->img_url)) : ?>
+                                <img data-src="<?= get_picture("galleries_v/{$gallery->gallery_type}", $value->img_url) ?>" alt="<?=$value->title?>" class="lazyload img-fluid d-block mb-3">
+                            <?php endif ?>
+                            <i class="fa fa-download bx-2x"></i> <?= !empty($value->title) && !empty($extension) ? $value->title . "." . $extension : $value->url ?>
+                        </a>
                     </div>
                 <?php else : ?>
                     <figure class="col-12 col-sm-12 col-md-12 <?= ($gallery->gallery_type == "videos" || $gallery->gallery_type == "video_urls" ? "col-lg-12 col-xl-12" : "col-lg-4 col-xl-3") ?> d-flex justify-content-center text-center border-radius" itemprop="associatedMedia" itemscope>
