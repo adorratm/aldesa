@@ -104,6 +104,26 @@
                         </ul>
                     </li>
                 <?php } ?>
+                <?php if (isAllowedViewModule("references")) { ?>
+                    <li class="nav-item <?= ($this->uri->segment(1) == "references") || ($this->uri->segment(1) == "reference_categories") ? "active" : "" ?>">
+                        <a class="nav-link <?= ($this->uri->segment(1) == "references") || ($this->uri->segment(1) == "reference_categories") ? "active" : "" ?>" href="javascript:void(0);" data-toggle="collapse" data-target="#references_nav">
+                            <i class="fa fa-medal"></i>
+                            <span class="nav-link-text">Bayi İşlemleri</span>
+                        </a>
+                        <ul id="references_nav" class="nav flex-column collapse  <?= ($this->uri->segment(1) == "references") || ($this->uri->segment(1) == "reference_categories") ? "show" : "" ?> collapse-level-1">
+                            <li class="nav-item <?= ($this->uri->segment(1) == "references") || ($this->uri->segment(1) == "reference_categories") ? "active" : "" ?>">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item  <?= ($this->uri->segment(1) == "reference_categories") ? "active" : "" ?>">
+                                        <a class="nav-link <?= ($this->uri->segment(1) == "reference_categories") ? "active" : "" ?>" href="<?= base_url("reference_categories"); ?>">Bayi Kategorileri</a>
+                                    </li>
+                                    <li class="nav-item  <?= ($this->uri->segment(1) == "references") ? "active" : "" ?>">
+                                        <a class="nav-link <?= ($this->uri->segment(1) == "references") ? "active" : "" ?>" href="<?= base_url("references"); ?>">Bayilerimiz</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } ?>
                 <?php if (isAllowedViewModule("users")) { ?>
                     <li class="nav-item <?= ($this->uri->segment(1) == "users" || $this->uri->segment(1) == "user_role") ? "active" : "" ?> ">
                         <a class="nav-link <?= ($this->uri->segment(1) == "users" || $this->uri->segment(1) == "user_role") ? "active" : "" ?>" href="javascript:void(0);" data-toggle="collapse" data-target="#users_nav">

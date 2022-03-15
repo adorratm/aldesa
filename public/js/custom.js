@@ -169,29 +169,4 @@
     jQuery(window).on('load', function () {
         jQuery(".preloader").fadeOut(500);
     });
-    $('body').append("<div class='switch-box'><label id='switch' class='switch'><input type='checkbox' onchange='toggleTheme()' id='slider'><span class='slider round'></span></label></div>");
 })(jQuery);
-function setTheme(themeName) {
-    localStorage.setItem('theme', themeName);
-    document.documentElement.className = themeName;
-}
-function toggleTheme() {
-    if (localStorage.getItem('theme') === 'theme-dark') {
-        setTheme('theme-light');
-    } else {
-        setTheme('theme-dark');
-    }
-}
-(function () {
-    if (localStorage.getItem('theme') === 'theme-dark') {
-        setTheme('theme-dark');
-        if (document.getElementById('slider') !== null) {
-            document.getElementById('slider').checked = false;
-        }
-    } else {
-        setTheme('theme-light');
-        if (document.getElementById('slider') !== null) {
-            document.getElementById('slider').checked = true;
-        }
-    }
-})();

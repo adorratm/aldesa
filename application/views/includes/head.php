@@ -573,7 +573,7 @@
 
         .main-nav nav .navbar-nav .nav-item .dropdown-menu {
             border: none;
-            padding: 0;
+            padding: 7px;
             border-radius: 0;
             background-color: #ffffff !important;
             -webkit-transform: scaleX(0);
@@ -595,7 +595,7 @@
             -webkit-transition: 0.7s;
             transition: 0.7s;
             font-weight: 500;
-            padding: 10px;
+            padding: 6px;
             border-bottom: 1px dashed #ebebeb;
         }
 
@@ -935,10 +935,6 @@
         .sticky-nav {
             top: 0;
             position: fixed;
-            -webkit-animation: 900ms ease-in-out 5s normal none 1 running fadeInDown;
-            animation: 900ms ease-in-out 5s normal none 1 running fadeInDown;
-            -webkit-transition: 0.9s;
-            transition: 0.9s;
             width: 100% !important;
             z-index: 2;
         }
@@ -7493,11 +7489,6 @@
     <link rel="preload" type="text/css" href="<?= asset_url("public/css/responsive.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet" type="text/css" href="<?= asset_url("public/css/responsive.css") ?>">
-    </noscript>
-
-    <link rel="preload" type="text/css" href="<?= asset_url("public/css/theme-dark.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" type="text/css" href="<?= asset_url("public/css/theme-dark.css") ?>">
     </noscript>
 
 
