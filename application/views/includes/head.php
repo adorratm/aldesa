@@ -3225,6 +3225,10 @@
             font-weight: 600;
         }
 
+        .faq-accordion .accordion .accordion-title.active {
+            border-bottom: 1px solid #ddd
+        }
+
         .faq-accordion .accordion .accordion-title i {
             position: absolute;
             right: 15px;
@@ -3256,6 +3260,7 @@
             padding-bottom: 10px;
             padding-right: 30px;
             padding-left: 30px;
+            padding-top: 30px;
         }
 
         .faq-accordion .accordion .accordion-content p {
@@ -7472,6 +7477,9 @@
 
         .carousel-indicators {
             z-index: 1 !important
+        }
+        .input-group .btn{
+            z-index: unset;
         }
     </style>
 

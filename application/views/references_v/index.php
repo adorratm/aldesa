@@ -3,11 +3,17 @@
     <img width="1920" height="500" data-src="<?= get_picture("settings_v", $settings->reference_logo) ?>" alt="<?= strto("lower|upper", lang("references")) ?>" class="lazyload w-100 img-fluid">
     <div class="container">
         <div class="inner-title text-center">
-            <h3><?= strto("lower|upper", lang("references")) ?></h3>
+            <h3><?= strto("lower|upper", !empty($category) ? $category->title : lang("references")) ?></h3>
             <ul>
                 <li><a rel="dofollow" href="<?= base_url(); ?>" title="<?= strto("lower|upper", lang("home")) ?>"><?= strto("lower|upper", lang("home")) ?></a></li>
                 <li><i class="fa fa-angle-right"></i></li>
-                <li><?= strto("lower|upper", lang("references")) ?></li>
+                <?php if (!empty($category)) : ?>
+                    <li><a href="<?= base_url(lang("routes_references")); ?>" rel="dofollow" title="<?= strto("lower|upper", lang("references")) ?>"><?= strto("lower|upper", lang("references")) ?></a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li><?= strto("lower|upper", $category->title) ?></li>
+                <?php else : ?>
+                    <li><?= strto("lower|upper", lang("references")) ?></li>
+                <?php endif ?>
             </ul>
         </div>
     </div>
@@ -16,68 +22,40 @@
 <!--================= Course Filter Section Start Here =================-->
 <div class="product-area pt-100 pb-70">
     <div class="container">
-        <div class="row pt-45">
-            <div class="col-12">
-                <div id="mapsvg-2" class="mb-3"></div>
-            </div>
-            <div class="col-lg-8">
-
-                <div class="row">
-                    <?php foreach ($references as $key => $value) : ?>
-                        <?php if (strtotime($value->sharedAt) <= strtotime("now")) : ?>
-                            <div class="single-studies col-lg-6 grid-item align-content-stretch align-items-stretch align-self-stretch mb-4">
-                                <div class="inner-course h-100">
-                                    <div>
-                                        <a rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . lang("routes_reference_detail") . "/{$value->seo_url}") ?>" title="<?= $value->title ?>">
-                                            <img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("references_v", $value->img_url) ?>" alt="<?= $value->title ?>" class="lazyload rounded img-fluid">
-                                        </a>
-                                    </div>
-                                    <div class="case-content">
-                                        <h4 class="case-title"> <a rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . lang("routes_reference_detail") . "/{$value->seo_url}") ?>" title="<?= $value->title ?>"><?= $value->title ?></a></h4>
-                                        <ul class="meta-course">
-                                            <?php foreach ($categories as $k => $v) : ?>
-                                                <?php if ($v->id == $value->category_id) : ?>
-                                                    <li><a class="text-secondary" rel="dofollow" href="<?= base_url(lang("routes_references") . "/{$v->seo_url}") ?>" title="<?= $v->title ?>"><i class="fa fa-folder"></i> <?= $v->title ?></a></li>
-                                                <?php endif ?>
-                                            <?php endforeach ?>
-                                        </ul>
-                                        <div class="my-3">
-                                            <?= mb_word_wrap($value->content, 150, "...") ?>
-                                        </div>
-                                        <div>
-                                            <a class="custom-button" rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . lang("routes_reference_detail") . "/{$value->seo_url}") ?>" title="<?= $value->title ?>"><?= lang("viewReference") ?></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif ?>
-                    <?php endforeach ?>
+        <div class="row">
+            <?php if (!empty($category) && $category->showMap) : ?>
+                <div class="col-12">
+                    <div id="mapsvg-2" class="mb-3 bg-white"></div>
                 </div>
-                <!--================= Pagination Section Start Here =================-->
-                <?= $links ?>
-                <!--================= Pagination Section End Here =================-->
-            </div>
-            <div class="col-lg-4">
-                <div class="react-sidebar ml----30">
-                    <div class="widget back-search">
-                        <h3 class="widget-title"><?= lang("searchReferences") ?></h3>
-                        <?php $csrf = array(
-                            'name' => $this->security->get_csrf_token_name(),
-                            'hash' => $this->security->get_csrf_hash()
-                        ); ?>
-                        <form action="<?= !empty($this->uri->segment(3) && !is_numeric($this->uri->segment(3))) ? base_url(lang("routes_references") . "/" . $this->uri->segment(3)) : base_url(lang("routes_references")) ?>" method="GET" enctype="multipart/form-data">
-                            <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>" />
-                            <input name="search" type="search" placeholder="<?= lang("searchReferences") ?>..." required>
-                            <button aria-label="<?= $settings->company_name ?>" type="submit"><i class="fa fa-search"></i></button>
-                        </form>
+            <?php endif ?>
+            <div class="col-lg-12">
+                <h3><?= lang("searchReferences") ?></h3>
+                <?php $csrf = array(
+                    'name' => $this->security->get_csrf_token_name(),
+                    'hash' => $this->security->get_csrf_hash()
+                ); ?>
+                <form onsubmit="return false" action="<?= !empty($this->uri->segment(3) && !is_numeric($this->uri->segment(3))) ? base_url(lang("routes_references") . "/" . $this->uri->segment(3)) : base_url(lang("routes_references")) ?>" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>" />
+                        <input class="form-control" name="search" type="search" placeholder="<?= lang("searchReferences") ?>..." required>
+                        <button class="default-btn searchReference btn rounded-0" data-country="<?= $category->showMap ? "Turkey" : null ?>" aria-label="<?= $settings->company_name ?>" type="submit"><i class="fa fa-search"></i></button>
                     </div>
+                </form>
+                <div class="faq-area pt-45">
+                    <div class="faq-accordion">
+                        <ul class="accordion referencesTable">
 
+                        </ul>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
+</div>
 <!--================= Course Filter Section End Here =================-->
+
 <script defer src="<?= asset_url("public/js/raphael.js") ?>"></script>
 <script defer src="<?= asset_url("public/js/mapsvg.js") ?>"></script>
 <script>
@@ -85,10 +63,10 @@
         if ($('#mapsvg-2').length > 0) {
             $('#mapsvg-2').mapSvg({
                 source: '<?= asset_url("public/images/turkey.svg") ?>',
-                
                 colors: {
+                    baseDefault: '#fff',
                     base: "#FFFFFF",
-                    Background: "#FFFFFF",
+                    background: "#FFFFFF",
                     selected: "#FFFFFF",
                     hover: "#ffffff",
                     selected: -20,
@@ -97,7 +75,7 @@
                     hover: -50,
                     disabled: "#FFFFFF",
                     loadingText: "Harita Yükleniyor",
-                    stroke: "#FFFFFF",
+                    stroke: "#fff",
                 },
                 width: 1920,
                 disableAll: false,
@@ -706,33 +684,95 @@
                         }
                     },
                     rect0: {
+                        disabled: true,
                         tooltip: '<?= $settings->company_name ?>',
                         attr: {
-                            fill: '#000',
+                            fill: '#fff',
                             href: 'javascript:void(0)'
                         }
                     },
                     path163: {
+                        disabled: true,
                         tooltip: '<?= $settings->company_name ?>',
                         attr: {
-                            fill: '#000',
+                            fill: '#fff',
                             href: 'javascript:void(0)'
                         }
                     },
                     path90: {
                         tooltip: '<?= $settings->company_name ?>',
+                        disabled: true,
                         attr: {
-                            fill: '#000',
-                            href: 'javascript:void(0)'
-                        }
+                            stroke: '#fff',
+                            fill: '#fff',
+                            href: 'javascript:void(0)',
+                        },
                     },
                     path1: {
                         tooltip: '<?= $settings->company_name ?>',
+                        disabled: true,
                         attr: {
-                            fill: '#000',
-                            href: 'javascript:void(0)'
+                            stroke: '#fff',
+                            fill: '#fff',
+                            href: 'javascript:void(0)',
+                        },
+                    },
+                    path331: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
                         }
-                    }
+                    },
+                    path327: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
+                        }
+                    },
+                    path328: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
+                        }
+                    },
+                    path329: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
+                        }
+                    },
+                    path330: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
+                        }
+                    },
+                    path332: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
+                        }
+                    },
+                    path333: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
+                        }
+                    },
+                    path334: {
+                        disabled: true,
+                        attr: {
+                            stroke: '#fff',
+                            fill: '#fff'
+                        }
+                    },
                 },
                 tooltipsMode: 'combined',
                 zoom: 0,
@@ -742,31 +782,123 @@
                 onClick: function(e, mapsvg) {
                     let tooltip = this.tooltip;
                     if (tooltip !== "<?= $settings->company_name ?>") {
-                        $.get("<?= asset_url("home/getreferences") ?>", {
-                            "city": encodeURIComponent(tooltip)
+                        $.post("<?= asset_url("home/references") ?>", {
+                            "country": "Turkey",
+                            "city": encodeURIComponent(tooltip),
+                            "search": $("input[name='search']").val(),
+                            "<?= $this->security->get_csrf_token_name() ?>": "<?= $this->security->get_csrf_hash() ?>"
                         }, function(response) {
                             if (response.success) {
                                 if (response.references.length === 0) {
-                                    $(".referencesTable").fadeOut('slow');
+                                    $(".referencesTable").fadeOut('fast');
                                 }
-                                let html = null;
-                                response.districts.forEach(function(el, i) {
+                                let html = '';
+                                if (response.references.length > 0) {
+
+                                    let i = 0
                                     response.references.forEach(function(reference, index) {
-                                        if (reference.district == el.district_id) {
-                                            html += '<tr><td>' + el.district + '</td><td>' + response.city + '</td><td>' + reference.title + '</td></tr>';
-                                        }
+                                        html += '<li class="accordion-item">' +
+                                            '<a class="accordion-title ' + (i == 0 ? "active" : '') + '" href="javascript:void(0)">' + '<em class="fa fa-map-marker"></em> <i class="fa fa-chevron-down"></i> ' + reference.city + ' - ' + reference.district + '</a>' +
+                                            '<div class="accordion-content" style="display:' + (i == 0 ? "block" : 'none') + '">' +
+                                            '<div class="product-area">' +
+                                            '<div class="row">' +
+                                            '<div class="col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 align-content-stretch align-items-stretch align-self-stretch mb-3">' +
+                                            '<div class="single-product p-2 h-100">' +
+                                            '<a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' +
+                                            '<img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("settings_v", $settings->logo) ?>" alt="' + reference.title + '" class="lazyload rounded img-fluid">' +
+                                            '</a>' +
+                                            '<div class="product-content">' +
+                                            '<h3 class="text-center"> <a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' + reference.title + '</a></h3>' +
+                                            '<span class="d-block"><a class="text-secondary" rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="<?= !empty($category->title) ? $category->title : null ?>"><i class="fa fa-folder"></i> <?= !empty($category->title) ? $category->title : null ?></a></span>' +
+                                            '<div class="my-3">' +
+                                            reference.content +
+                                            '</div></div></div></div>' +
+                                            '</div></div></div></li>';
+                                        i++;
                                     });
-                                });
-                                if (html !== null) {
-                                    $(".referencesTable").fadeIn('slow');
-                                    $("#references").html(html);
+                                } else {
+                                    html += '<div class="alert alert-danger" role="alert">' +
+                                        '<?= lang("referenceNotFound") ?>' +
+                                        '</div>'
                                 }
-                                console.log(response);
+                                if (html !== '') {
+                                    $(".referencesTable").fadeIn('fast');
+                                    $(".referencesTable").html(html);
+                                    $('html, body').animate({
+                                        scrollTop: $(".faq-area").offset().top - 200
+                                    }, 250);
+                                }
+
                             }
                         }, 'JSON')
                     }
+                },
+            });
+            $(document).on("click", ".searchReference", function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if ($("input[name='search']").val() !== '') {
+                    $.post("<?= asset_url("home/references") ?>", {
+                        "country": $(this).data("country"),
+                        "search": $("input[name='search']").val(),
+                        "<?= $this->security->get_csrf_token_name() ?>": "<?= $this->security->get_csrf_hash() ?>"
+                    }, function(response) {
+                        if (response.success) {
+                            if (response.references.length === 0) {
+                                $(".referencesTable").fadeOut('fast');
+                            }
+                            let html = '';
+                            if (response.references.length > 0) {
+
+                                let i = 0
+                                response.references.forEach(function(reference, index) {
+                                    html += '<li class="accordion-item">' +
+                                        '<a class="accordion-title ' + (i == 0 ? "active" : '') + '" href="javascript:void(0)">' + '<em class="fa fa-map-marker"></em> <i class="fa fa-chevron-down"></i> ' + reference.city + ' - ' + reference.district + '</a>' +
+                                        '<div class="accordion-content" style="display:' + (i == 0 ? "block" : 'none') + '">' +
+                                        '<div class="product-area">' +
+                                        '<div class="row">' +
+                                        '<div class="col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 align-content-stretch align-items-stretch align-self-stretch mb-3">' +
+                                        '<div class="single-product p-2 h-100">' +
+                                        '<a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' +
+                                        '<img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("settings_v", $settings->logo) ?>" alt="' + reference.title + '" class="lazyload rounded img-fluid">' +
+                                        '</a>' +
+                                        '<div class="product-content">' +
+                                        '<h3 class="text-center"> <a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' + reference.title + '</a></h3>' +
+                                        '<span class="d-block"><a class="text-secondary" rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="<?= !empty($category->title) ? $category->title : null ?>"><i class="fa fa-folder"></i> <?= !empty($category->title) ? $category->title : null ?></a></span>' +
+                                        '<div class="my-3">' +
+                                        reference.content +
+                                        '</div></div></div></div>' +
+                                        '</div></div></div></li>';
+                                    i++;
+                                });
+                            } else {
+                                html += '<div class="alert alert-danger" role="alert">' +
+                                    '<?= lang("referenceNotFound") ?>' +
+                                    '</div>'
+                            }
+                            if (html !== '') {
+                                $(".referencesTable").fadeIn('fast');
+                                $(".referencesTable").html(html);
+                                $('html, body').animate({
+                                    scrollTop: $(".faq-area").offset().top - 200
+                                }, 250);
+                            }
+
+                        }
+                    }, 'JSON')
                 }
             });
+            setTimeout(function() {
+                $("path#path334").attr("stroke", "#fff").remove();
+                $("path#path333").attr("stroke", "#fff").remove();
+                $("path#path332").attr("stroke", "#fff").remove();
+                $("path#path331").attr("stroke", "#fff").remove();
+                $("path#path330").attr("stroke", "#fff").remove();
+                $("path#path329").attr("stroke", "#fff").remove();
+                $("path#path328").attr("stroke", "#fff").remove();
+                $("path#path327").attr("stroke", "#fff").remove();
+            }, 500);
+
         }
     })
 </script>

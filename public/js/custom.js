@@ -125,7 +125,7 @@
         tab.find('.tab_content').find('div.tabs_item:eq(' + index + ')').slideDown();
         g.preventDefault();
     });
-    $('.accordion').find('.accordion-title').on('click', function () {
+    $(document).on('click','.accordion-title', function () {
         $(this).toggleClass('active');
         $(this).next().slideToggle('fast');
         $('.accordion-content').not($(this).next()).slideUp('fast');

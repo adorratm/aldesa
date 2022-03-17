@@ -5,6 +5,7 @@ $lang["appointmentDesc"] = "Geleceğiniz için hemen karar vermek zorunda olmasa
 $lang["watch"] = "Videoyu İzleyin";
 $lang["services"] = "Hizmetlerimiz";
 $lang["references"] = "Bayilerimiz";
+$lang["referenceNotFound"] = "Seçtiğiniz Şehirde Veya Aradığınız Kelime İle Eşleşen Bayimiz Bulunmamaktadır.";
 $lang["virtualTour"] = "Sanal Tur";
 $lang["corporate"] = "Kurumsal";
 $lang['downloadFromAppStore'] = "App Store";
