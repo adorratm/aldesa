@@ -113,11 +113,6 @@
         <link rel="stylesheet" type="text/css" href="<?= asset_url("public/css/owl.theme.default.min.css") ?>">
     </noscript>
 
-    <link rel="preload" type="text/css" href="<?= asset_url("public/css/nice-select.min.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" type="text/css" href="<?= asset_url("public/css/nice-select.min.css") ?>">
-    </noscript>
-
     <link rel="preload" type="text/css" href="<?= asset_url("public/css/meanmenu.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet" type="text/css" href="<?= asset_url("public/css/meanmenu.css") ?>">

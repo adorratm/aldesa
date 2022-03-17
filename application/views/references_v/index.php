@@ -27,6 +27,19 @@
                 <div class="col-12">
                     <div id="mapsvg-2" class="mb-3 bg-white"></div>
                 </div>
+            <?php else : ?>
+                <?php if (!empty($countries)) : ?>
+                    <div class="col-12 mb-3">
+                        <div class="form-group">
+                            <h3><?= lang("chooseCountry") ?></h3>
+                            <select class="form-control form-control-lg rounded-0" onchange="$('.searchReference').click()" name="country" id="country">
+                                <?php foreach ($countries as $key => $value) : ?>
+                                    <option value="<?= $value->name ?>"><?= $value->name ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                <?php endif ?>
             <?php endif ?>
             <div class="col-lg-12">
                 <h3><?= lang("searchReferences") ?></h3>
@@ -37,8 +50,8 @@
                 <form onsubmit="return false" action="<?= !empty($this->uri->segment(3) && !is_numeric($this->uri->segment(3))) ? base_url(lang("routes_references") . "/" . $this->uri->segment(3)) : base_url(lang("routes_references")) ?>" method="POST" enctype="multipart/form-data">
                     <div class="input-group">
                         <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>" />
-                        <input class="form-control" name="search" type="search" placeholder="<?= lang("searchReferences") ?>..." required>
-                        <button class="default-btn searchReference btn rounded-0" data-country="<?= $category->showMap ? "Turkey" : null ?>" aria-label="<?= $settings->company_name ?>" type="submit"><i class="fa fa-search"></i></button>
+                        <input class="form-control" name="search" type="search" placeholder="<?= lang("searchReferences") ?>...">
+                        <button class="default-btn searchReference btn rounded-0" aria-label="<?= $settings->company_name ?>" type="submit"><i class="fa fa-search"></i></button>
                     </div>
                 </form>
                 <div class="faq-area pt-45">
@@ -834,60 +847,7 @@
                     }
                 },
             });
-            $(document).on("click", ".searchReference", function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                if ($("input[name='search']").val() !== '') {
-                    $.post("<?= asset_url("home/references") ?>", {
-                        "country": $(this).data("country"),
-                        "search": $("input[name='search']").val(),
-                        "<?= $this->security->get_csrf_token_name() ?>": "<?= $this->security->get_csrf_hash() ?>"
-                    }, function(response) {
-                        if (response.success) {
-                            if (response.references.length === 0) {
-                                $(".referencesTable").fadeOut('fast');
-                            }
-                            let html = '';
-                            if (response.references.length > 0) {
 
-                                let i = 0
-                                response.references.forEach(function(reference, index) {
-                                    html += '<li class="accordion-item">' +
-                                        '<a class="accordion-title ' + (i == 0 ? "active" : '') + '" href="javascript:void(0)">' + '<em class="fa fa-map-marker"></em> <i class="fa fa-chevron-down"></i> ' + reference.city + ' - ' + reference.district + '</a>' +
-                                        '<div class="accordion-content" style="display:' + (i == 0 ? "block" : 'none') + '">' +
-                                        '<div class="product-area">' +
-                                        '<div class="row">' +
-                                        '<div class="col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 align-content-stretch align-items-stretch align-self-stretch mb-3">' +
-                                        '<div class="single-product p-2 h-100">' +
-                                        '<a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' +
-                                        '<img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("settings_v", $settings->logo) ?>" alt="' + reference.title + '" class="lazyload rounded img-fluid">' +
-                                        '</a>' +
-                                        '<div class="product-content">' +
-                                        '<h3 class="text-center"> <a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' + reference.title + '</a></h3>' +
-                                        '<span class="d-block"><a class="text-secondary" rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="<?= !empty($category->title) ? $category->title : null ?>"><i class="fa fa-folder"></i> <?= !empty($category->title) ? $category->title : null ?></a></span>' +
-                                        '<div class="my-3">' +
-                                        reference.content +
-                                        '</div></div></div></div>' +
-                                        '</div></div></div></li>';
-                                    i++;
-                                });
-                            } else {
-                                html += '<div class="alert alert-danger" role="alert">' +
-                                    '<?= lang("referenceNotFound") ?>' +
-                                    '</div>'
-                            }
-                            if (html !== '') {
-                                $(".referencesTable").fadeIn('fast');
-                                $(".referencesTable").html(html);
-                                $('html, body').animate({
-                                    scrollTop: $(".faq-area").offset().top - 200
-                                }, 250);
-                            }
-
-                        }
-                    }, 'JSON')
-                }
-            });
             setTimeout(function() {
                 $("path#path334").attr("stroke", "#fff").remove();
                 $("path#path333").attr("stroke", "#fff").remove();
@@ -898,7 +858,63 @@
                 $("path#path328").attr("stroke", "#fff").remove();
                 $("path#path327").attr("stroke", "#fff").remove();
             }, 500);
-
         }
+        $(document).on("click", ".searchReference", function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            let country = "Turkey";
+            <?php if (!empty($category) && $category->showMap) : ?>
+                country = "Turkey";
+            <?php else:?>
+                country = $("#country").val();
+            <?php endif ?>
+            $.post("<?= asset_url("home/references") ?>", {
+                "country": country,
+                "search": $("input[name='search']").val(),
+                "<?= $this->security->get_csrf_token_name() ?>": "<?= $this->security->get_csrf_hash() ?>"
+            }, function(response) {
+                if (response.success) {
+                    if (response.references.length === 0) {
+                        $(".referencesTable").fadeOut('fast');
+                    }
+                    let html = '';
+                    if (response.references.length > 0) {
+
+                        let i = 0
+                        response.references.forEach(function(reference, index) {
+                            html += '<li class="accordion-item">' +
+                                '<a class="accordion-title ' + (i == 0 ? "active" : '') + '" href="javascript:void(0)">' + '<em class="fa fa-map-marker"></em> <i class="fa fa-chevron-down"></i> ' + reference.city + ' - ' + reference.district + '</a>' +
+                                '<div class="accordion-content" style="display:' + (i == 0 ? "block" : 'none') + '">' +
+                                '<div class="product-area">' +
+                                '<div class="row">' +
+                                '<div class="col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 align-content-stretch align-items-stretch align-self-stretch mb-3">' +
+                                '<div class="single-product p-2 h-100">' +
+                                '<a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' +
+                                '<img width="1920" height="1280" loading="lazy" data-src="<?= get_picture("settings_v", $settings->logo) ?>" alt="' + reference.title + '" class="lazyload rounded img-fluid">' +
+                                '</a>' +
+                                '<div class="product-content">' +
+                                '<h3 class="text-center"> <a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' + reference.title + '</a></h3>' +
+                                '<span class="d-block"><a class="text-secondary" rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="<?= !empty($category->title) ? $category->title : null ?>"><i class="fa fa-folder"></i> <?= !empty($category->title) ? $category->title : null ?></a></span>' +
+                                '<div class="my-3">' +
+                                reference.content +
+                                '</div></div></div></div>' +
+                                '</div></div></div></li>';
+                            i++;
+                        });
+                    } else {
+                        html += '<div class="alert alert-danger" role="alert">' +
+                            '<?= lang("referenceNotFound") ?>' +
+                            '</div>'
+                    }
+                    if (html !== '') {
+                        $(".referencesTable").fadeIn('fast');
+                        $(".referencesTable").html(html);
+                        $('html, body').animate({
+                            scrollTop: $(".faq-area").offset().top - 200
+                        }, 250);
+                    }
+                }
+            }, 'JSON')
+        });
     })
 </script>

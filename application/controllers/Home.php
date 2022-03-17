@@ -50,7 +50,7 @@ class Home extends MY_Controller
         endif;
         $locales = $this->general_model->get("languages", null, ["code" => strto("lower", $this->viewData->lang)]);
         setlocale(LC_ALL, $locales->code . "_" . (strto("lower|upper", $locales->code)));
-        $currency = $this->general_model->get("countries", null, ["code" => strto("lower|upper", $this->viewData->lang)]);
+        $currency = $this->general_model->get("countries", null, ["code" => strto("lower|upper", $this->viewData->lang == "en" ? "us" : $this->viewData->lang)]);
         $this->viewData->currency = $currency->currency_code;
         $this->viewData->formatter = new NumberFormatter($locales->code, NumberFormatter::CURRENCY);
         $this->viewData->dateFormatter = new IntlDateFormatter($locales->code . "_" . (strto("lower|upper", ($locales->code == "en" ? "US" : $locales->code))), IntlDateFormatter::LONG, IntlDateFormatter::SHORT);
@@ -674,17 +674,18 @@ class Home extends MY_Controller
                 $wheres["category_id"] = $category_id;
             endif;
             if (!empty($_POST["country"])) :
-                $wheres["country"] = $_POST["country"];
+                $wheres["country"] = clean($_POST["country"]);
             endif;
             if (!empty($_POST["city"])) :
-                $wheres["city"] = urldecode($_POST["city"]);
+                $wheres["city"] = clean(urldecode($_POST["city"]));
             endif;
-            if(!empty($search)):
+            if (!empty($search)) :
                 $likes = ["title" =>  $search, "city" => $search, "district" => $search, "country" => $search, "content" =>  $search, "createdAt" => $search, "updatedAt" =>  $search];
             endif;
-            $this->viewData->references = $this->general_model->get_all("references", null, "district ASC,rank ASC", $wheres, $likes, [], []);
+            $this->viewData->references = $this->general_model->get_all("references", null, "country ASC,city ASC,district ASC,rank ASC", $wheres, $likes, [], []);
             echo json_encode(["success" => true, "references" => $this->viewData->references]);
         else :
+            $this->viewData->countries = $this->general_model->get_all("countries");
             $this->viewData->category = $category;
             $this->viewData->meta_title = clean(strto("lower|upper", lang("references"))) . " - " . $this->viewData->settings->company_name;
             $this->viewData->meta_desc  = str_replace("”", "\"", stripslashes($this->viewData->settings->meta_description));
@@ -1311,8 +1312,8 @@ class Home extends MY_Controller
      */
     public function switchLanguage()
     {
-        if (!empty($this->input->post("lang"))) :
-            $lang = $this->input->post("lang");
+        if (!empty($this->input->get("lang"))) :
+            $lang = $this->input->get("lang");
         else :
             $lang = "tr";
         endif;
@@ -1320,7 +1321,10 @@ class Home extends MY_Controller
             $this->general_model->update("users", ["id" => get_active_user()->id], ["lang" => $lang]);
         endif;
         set_cookie("lang", $lang, strtotime("+1 year"));
-        redirect(base_url());
+        if (file_exists(dirname(APPPATH, 1) . '/panel/application/language/' . $lang)) :
+            $this->lang->load($lang, $lang, FALSE, TRUE, dirname(APPPATH, 1) . '/panel/application/');
+            redirect(asset_url($lang));
+        endif;
     }
     /**
      * -----------------------------------------------------------------------------------------------

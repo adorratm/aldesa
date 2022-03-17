@@ -274,7 +274,6 @@
 <!-- Site Scripts -->
 <script defer src="<?= asset_url("public/js/bootstrap.bundle.min.js") ?>"></script>
 <script defer src="<?= asset_url("public/js/owl.carousel.min.js") ?>"></script>
-<script defer src="<?= asset_url("public/js/jquery.nice-select.min.js") ?>"></script>
 <script defer src="<?= asset_url("public/js/wow.min.js") ?>"></script>
 <script defer src="<?= asset_url("public/js/meanmenu.js") ?>"></script>
 <script defer src="<?= asset_url("public/js/custom.js") ?>"></script>

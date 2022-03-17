@@ -139,8 +139,22 @@
                     <?= $menus ?>
                     <div class="others-options d-flex align-items-center">
                         <div class="option-item">
-                            <a class="default-btn">Test</a>
+                            <a rel="dofollow" href="<?= lang("appointmentLink") ?>" target="_blank" title="<?= lang("makeAppointment") ?>" class="default-btn"><?= lang("makeAppointment") ?></a>
                         </div>
+                        <?php if (!empty($languages)) : ?>
+                            <div class="option-item">
+                                <div class="dropdown">
+                                    <a rel="dofollow" title="<?=$settings->company_name?>" href="<?=base_url()?>" class="default-btn dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <?= strto("lower|upper",$lang) ?>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <?php foreach ($languages as $key => $value) : ?>
+                                            <li><a rel="dofollow" href="<?= asset_url("home/".lang("routes_change-language") . "?lang=" . $value) ?>" class="dropdown-item <?= ($value === $lang ? "active" : null) ?>"><?= strto("lower|upper", $value) ?></a></li>
+                                        <?php endforeach ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php endif ?>
                     </div>
                 </div>
             </nav>
@@ -157,15 +171,30 @@
             </div>
             <div class="container">
                 <div class="side-nav-inner">
-                    <div class="side-nav justify-content-center align-items-center">
-                        <div class="side-item">
+                    <div class="side-nav  justify-content-center align-items-center">
+                        <div class="side-item d-flex align-items-center">
                             <div class="option-item">
-                                <a class="default-btn">Test</a>
+                                <a rel="dofollow" href="<?= lang("appointmentLink") ?>" target="_blank" title="<?= lang("makeAppointment") ?>" class="default-btn"><?= lang("makeAppointment") ?></a>
                             </div>
+                            <?php if (!empty($languages)) : ?>
+                            <div class="option-item ms-1">
+                                <div class="dropdown">
+                                    <a rel="dofollow" title="<?=$settings->company_name?>" href="<?=base_url()?>" class="default-btn dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <?= strto("lower|upper",$lang) ?>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <?php foreach ($languages as $key => $value) : ?>
+                                            <li><a rel="dofollow" href="<?= asset_url("home/".lang("routes_change-language") . "?lang=" . $value) ?>" class="dropdown-item <?= ($value === $lang ? "active" : null) ?>"><?= strto("lower|upper", $value) ?></a></li>
+                                        <?php endforeach ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php endif ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>

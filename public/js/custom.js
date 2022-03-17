@@ -115,7 +115,6 @@
             1200: { items: 6 }
         },
     });
-    $('select').niceSelect();
     $('.tab ul.tabs').addClass('active').find('> li:eq(0)').addClass('current');
     $('.tab ul.tabs li a').on('click', function (g) {
         var tab = $(this).closest('.tab'), index = $(this).closest('li').index();

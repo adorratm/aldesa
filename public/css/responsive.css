@@ -147,8 +147,7 @@
     .side-nav-responsive .container .container {
         position: absolute;
         top: 80px;
-        right: -20px;
-        max-width: 185px;
+        max-width: 280px;
         margin-left: auto;
         opacity: 0;
         visibility: hidden;
@@ -929,9 +928,8 @@
 
     .side-nav-responsive .container .container {
         position: absolute;
-        top: 55px;
-        right: -20px;
-        max-width: 185px;
+        top: 80px;
+        max-width: 280px;
         margin-left: auto;
         opacity: 0;
         visibility: hidden;
