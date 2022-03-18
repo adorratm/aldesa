@@ -64,16 +64,12 @@ class Homeitems extends MY_Controller
     public function save()
     {
         $data = rClean($this->input->post());
-        if (checkEmpty($data)["error"]) :
+        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "content" && checkEmpty($data)["key"] !== "img_url") :
             $key = checkEmpty($data)["key"];
             echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Anasayfa İçeriği Kaydı Yapılırken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
         else :
             $getRank = $this->homeitem_model->rowCount();
-            if (!empty($_FILES)) :
-                if (empty($_FILES["img_url"]["name"])) :
-                    echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Anasayfa İçeriği Eklenirken Hata Oluştu. Anasayfa İçeriği Görseli Seçtiğinizden Emin Olup, Lütfen Tekrar Deneyin."]);
-                    die();
-                endif;
+            if (!empty($_FILES["img_url"]["name"])) :
                 $image = upload_picture("img_url", "uploads/$this->viewFolder");
                 if ($image["success"]) :
                     $data["img_url"] = $image["file_name"];
@@ -81,9 +77,6 @@ class Homeitems extends MY_Controller
                     echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Anasayfa İçeriği Kaydı Yapılırken Hata Oluştu. Anasayfa İçeriği Görseli Seçtiğinizden Emin Olup Tekrar Deneyin."]);
                     die();
                 endif;
-            else :
-                echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Anasayfa İçeriği Kaydı Yapılırken Hata Oluştu. Anasayfa İçeriği Görseli Seçtiğinizden Emin Olup Tekrar Deneyin."]);
-                die();
             endif;
             $data["content"] = $_POST["content"];
             $data["isActive"] = 1;
@@ -108,7 +101,7 @@ class Homeitems extends MY_Controller
     public function update($id)
     {
         $data = rClean($this->input->post());
-        if (checkEmpty($data)["error"]) :
+        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "content" && checkEmpty($data)["key"] !== "img_url") :
             $key = checkEmpty($data)["key"];
             echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Anasayfa İçeriği Güncelleştirilirken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
         else :

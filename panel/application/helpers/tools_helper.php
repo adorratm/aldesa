@@ -516,10 +516,12 @@ function sayiyiYaziyaCevir($sayi, $kurusbasamak, $parabirimi, $parakurus, $diyez
  */
 function mb_word_wrap($string, $max_length, $end_substitute = null, $html_linebreaks = true)
 {
-    if ($html_linebreaks) $string = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $string);
-    $string = strip_tags($string); //gets rid of the HTML
+    if (!empty($string)) :
+        if ($html_linebreaks) $string = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $string);
+        $string = strip_tags($string); //gets rid of the HTML
+    endif;
     if (empty($string) || mb_strlen($string) <= $max_length) :
-        if ($html_linebreaks) $string = nl2br($string);
+        if ($html_linebreaks && !empty($string)) $string = nl2br($string);
         return $string;
     endif;
     if ($end_substitute) $max_length -= mb_strlen($end_substitute, 'UTF-8');

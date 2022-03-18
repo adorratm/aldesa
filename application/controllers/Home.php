@@ -74,7 +74,7 @@ class Home extends MY_Controller
         /**
          * User Wishlists
          */
-        $this->viewData->pages = $this->general_model->get_all("pages", null, "rank ASC", ["isActive" => 1]);
+        $this->viewData->pages = $this->general_model->get_all("pages", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang]);
         /*$userWishlists = (get_active_user() ? $this->general_model->get_all("product_wishlists", null, "id DESC", ["user_id" => get_active_user()->id]) : []);
         $wishlistsArray = [];
         if (!empty($userWishlists)) :
@@ -168,8 +168,9 @@ class Home extends MY_Controller
         /**
          * Home Items
          */
-        //$this->viewData->homeitems = $this->general_model->get_all("home_items", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang],[],[],[4]);
-        //$this->viewData->homeitemsFooter = $this->general_model->get_all("home_items", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang],[],[],[4,4]);
+        $this->viewData->homeitems = $this->general_model->get_all("home_items", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang], [], [], [4]);
+        $this->viewData->homeitemsFooter = $this->general_model->get_all("home_items", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang], [], [], [4, 4]);
+        $this->viewData->productCategories = $this->general_model->get_all("product_categories", null, "rank ASC", ["isActive" => 1,"top_id" => 0, "lang" => $this->viewData->lang]);
         /*
         $wheres["p.isActive"] = 1;
         $wheres["pi.isCover"] = 1;
@@ -179,6 +180,7 @@ class Home extends MY_Controller
         $select = "GROUP_CONCAT(pc.seo_url) category_seos,GROUP_CONCAT(pc.title) category_titles,GROUP_CONCAT(pc.id) category_ids,p.id,p.title,p.url,pi.url img_url,IFNULL(pvg.price,p.price) price,IFNULL(pvg.discount,p.discount) discount,IFNULL(pvg.stock,p.stock) stock,IFNULL(pvg.stockStatus,p.stockStatus) stockStatus,p.isDiscount isDiscount,p.sharedAt";
         $distinct = true;
         $groupBy = ["p.id", "pwc.product_id"];
+        $this->viewData->products = $this->general_model->get_all("products p", $select, "RAND()", $wheres, [], $joins, [3], [], $distinct, $groupBy);
         */
         /**
          * Get Suggested Products
@@ -212,6 +214,9 @@ class Home extends MY_Controller
         */
         //$this->viewData->stories = $this->general_model->get_all("stories", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang]);
         //$this->viewData->story_items = $this->general_model->get_all("story_items", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang]);
+        $this->viewData->blogs = $this->general_model->get_all("blogs", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang], [], [], [6]);
+        $this->viewData->blog_categories = $this->general_model->get_all("blog_categories", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang]);
+        $this->viewData->testimonials = $this->general_model->get_all("testimonials", null, "rank ASC", ["isActive" => 1, "lang" => $this->viewData->lang]);
 
 
         $this->viewData->meta_title = clean(strto("lower|upper", lang("home"))) . " - " . $this->viewData->settings->company_name;

@@ -1,6 +1,17 @@
 (function ($) {
     'use strict';
     jQuery('.mean-menu').meanmenu({ meanScreenWidth: "991" });
+    let popup = $('.custom-popup');
+    if (popup.length) {
+        $('.custom-popup').magnificPopup({
+            disableOn: 10,
+            type: 'iframe',
+            mainClass: 'mfp-fade',
+            removalDelay: 160,
+            preloader: false,
+            fixedContentPos: false
+        });
+    }
     $(window).on('scroll', function () {
         if ($(this).scrollTop() > 150) {
             $('.navbar-area').addClass("sticky-nav");
@@ -31,7 +42,7 @@
         dotsData: true,
         autoplay: true,
         autoplayHoverPause: true,
-        navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
     });
     $('.service-slider').owlCarousel({
         rewind: true,
@@ -42,7 +53,7 @@
         dotsData: true,
         autoplay: true,
         autoplayHoverPause: true,
-        navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
         responsive: {
             0: { items: 1 },
             768: { items: 2 },
@@ -72,7 +83,7 @@
             768: { items: 2 },
             1000: { items: 3 }
         },
-        navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
     });
     $('.project-slider').owlCarousel({
         rewind: true,
@@ -97,7 +108,7 @@
         dots: false,
         autoplay: true,
         autoplayHoverPause: true,
-        navText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+        navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
     });
     $('.brand-slider').owlCarousel({
         rewind: true,

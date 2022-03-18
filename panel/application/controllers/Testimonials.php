@@ -41,7 +41,7 @@ class Testimonials extends MY_Controller
                 </div>
             </div>';
                 $checkbox = '<div class="custom-control custom-switch"><input data-id="' . $item->id . '" data-url="' . base_url("testimonials/isActiveSetter/{$item->id}") . '" data-status="' . ($item->isActive == 1 ? "checked" : null) . '" id="customSwitch' . $i . '" type="checkbox" ' . ($item->isActive == 1 ? "checked" : null) . ' class="my-check custom-control-input" >  <label class="custom-control-label" for="customSwitch' . $i . '"></label></div>';
-                $data[] = [$item->rank, '<i class="fa fa-arrows" data-id="' . $item->id . '"></i>', $item->id, $item->title, $item->full_name, mb_word_wrap(clean($item->content), 30, "..."),$item->lang, $checkbox, turkishDate("d F Y, l H:i:s", $item->createdAt), turkishDate("d F Y, l H:i:s", $item->updatedAt), turkishDate("d F Y, l H:i:s", $item->sharedAt), $proccessing];
+                $data[] = [$item->rank, '<i class="fa fa-arrows" data-id="' . $item->id . '"></i>', $item->id, $item->title, mb_word_wrap(clean($item->content), 30, "..."),$item->lang, $checkbox, turkishDate("d F Y, l H:i:s", $item->createdAt), turkishDate("d F Y, l H:i:s", $item->updatedAt), turkishDate("d F Y, l H:i:s", $item->sharedAt), $proccessing];
             endforeach;
         endif;
         $output = [
@@ -64,16 +64,12 @@ class Testimonials extends MY_Controller
     public function save()
     {
         $data = rClean($this->input->post());
-        if (checkEmpty($data)["error"]) :
+        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "full_name" && checkEmpty($data)["key"] !== "company_name" && checkEmpty($data)["key"] !== "img_url") :
             $key = checkEmpty($data)["key"];
             echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ziyaretçi Notu Kaydı Yapılırken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
         else :
             $getRank = $this->testimonial_model->rowCount();
-            if (!empty($_FILES)) :
-                if (empty($_FILES["img_url"]["name"])) :
-                    echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ziyaretçi Notu Eklenirken Hata Oluştu. Ziyaretçi Notu Görseli Seçtiğinizden Emin Olup, Lütfen Tekrar Deneyin."]);
-                    die();
-                endif;
+            if (!empty($_FILES["img_url"]["name"])) :
                 $image = upload_picture("img_url", "uploads/$this->viewFolder");
                 if ($image["success"]) :
                     $data["img_url"] = $image["file_name"];
@@ -81,9 +77,6 @@ class Testimonials extends MY_Controller
                     echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ziyaretçi Notu Kaydı Yapılırken Hata Oluştu. Ziyaretçi Notu Görseli Seçtiğinizden Emin Olup Tekrar Deneyin."]);
                     die();
                 endif;
-            else :
-                echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ziyaretçi Notu Kaydı Yapılırken Hata Oluştu. Ziyaretçi Notu Görseli Seçtiğinizden Emin Olup Tekrar Deneyin."]);
-                die();
             endif;
             $data["content"] = $_POST["content"];
             $data["isActive"] = 1;
@@ -108,7 +101,7 @@ class Testimonials extends MY_Controller
     public function update($id)
     {
         $data = rClean($this->input->post());
-        if (checkEmpty($data)["error"]) :
+        if (checkEmpty($data)["error"] && checkEmpty($data)["key"] !== "full_name" && checkEmpty($data)["key"] !== "company_name" && checkEmpty($data)["key"] !== "img_url") :
             $key = checkEmpty($data)["key"];
             echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ziyaretçi Notu Güncelleştirilirken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
         else :

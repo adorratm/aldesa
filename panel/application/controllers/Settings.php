@@ -105,17 +105,17 @@ class Settings extends MY_Controller
                 echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ayar Eklenirken Hata Oluştu. Galeri Logosunu Seçtiğinizden Emin Olup, Lütfen Tekrar Deneyin."]);
                 die();
             endif;
-            $logo = upload_picture("logo", "uploads/$this->viewFolder");
-            $mobile_logo = upload_picture("mobile_logo", "uploads/$this->viewFolder");
-            $favicon = upload_picture("favicon", "uploads/$this->viewFolder");
-            $contact_logo = upload_picture("contact_logo", "uploads/$this->viewFolder");
-            $blog_logo = upload_picture("blog_logo", "uploads/$this->viewFolder");
-            $service_logo = upload_picture("service_logo", "uploads/$this->viewFolder");
-            $reference_logo = upload_picture("reference_logo", "uploads/$this->viewFolder");
-            $about_logo = upload_picture("about_logo", "uploads/$this->viewFolder");
-            $gallery_logo = upload_picture("gallery_logo", "uploads/$this->viewFolder");
-            $product_logo = upload_picture("product_logo", "uploads/$this->viewFolder");
-            $product_detail_logo = upload_picture("product_detail_logo", "uploads/$this->viewFolder");
+            $logo = upload_picture("logo", "uploads/$this->viewFolder",[],"*");
+            $mobile_logo = upload_picture("mobile_logo", "uploads/$this->viewFolder",[],"*");
+            $favicon = upload_picture("favicon", "uploads/$this->viewFolder",[],"*");
+            $contact_logo = upload_picture("contact_logo", "uploads/$this->viewFolder",[],"*");
+            $blog_logo = upload_picture("blog_logo", "uploads/$this->viewFolder",[],"*");
+            $service_logo = upload_picture("service_logo", "uploads/$this->viewFolder",[],"*");
+            $reference_logo = upload_picture("reference_logo", "uploads/$this->viewFolder",[],"*");
+            $about_logo = upload_picture("about_logo", "uploads/$this->viewFolder",[],"*");
+            $gallery_logo = upload_picture("gallery_logo", "uploads/$this->viewFolder",[],"*");
+            $product_logo = upload_picture("product_logo", "uploads/$this->viewFolder",[],"*");
+            $product_detail_logo = upload_picture("product_detail_logo", "uploads/$this->viewFolder",[],"*");
             $getRank = $this->settings_model->rowCount();
             if ($logo["success"]) :
                 $data["logo"] = $logo["file_name"];
@@ -216,7 +216,7 @@ class Settings extends MY_Controller
                 echo json_encode(["success" => false, "title" => "Başarısız!", "message" => "Ayar Güncelleştirilirken Hata Oluştu. \"{$key}\" Bilgisini Doldurduğunuzdan Emin Olup Tekrar Deneyin."]);
             else :
                 if (!empty($_FILES["logo"]["name"])) :
-                    $image = upload_picture("logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["logo"] = $image["file_name"];
                         if (!is_dir(FCPATH . "uploads/{$this->viewFolder}/{$settings->logo}") && file_exists(FCPATH . "uploads/{$this->viewFolder}/{$settings->logo}")) :
@@ -228,7 +228,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["mobile_logo"]["name"])) :
-                    $image = upload_picture("mobile_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("mobile_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["mobile_logo"] = $image["file_name"];
                         if (!is_dir(FCPATH . "uploads/{$this->viewFolder}/{$settings->mobile_logo}") && file_exists(FCPATH . "uploads/{$this->viewFolder}/{$settings->mobile_logo}")) :
@@ -240,7 +240,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["favicon"]["name"])) :
-                    $image = upload_picture("favicon", "uploads/$this->viewFolder");
+                    $image = upload_picture("favicon", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["favicon"] = $image["file_name"];
                         if (!is_dir(FCPATH . "uploads/{$this->viewFolder}/{$settings->favicon}") && file_exists(FCPATH . "uploads/{$this->viewFolder}/{$settings->favicon}")) :
@@ -252,7 +252,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["contact_logo"]["name"])) :
-                    $image = upload_picture("contact_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("contact_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["contact_logo"] = $image["file_name"];
                     else :
@@ -261,7 +261,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["blog_logo"]["name"])) :
-                    $image = upload_picture("blog_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("blog_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["blog_logo"] = $image["file_name"];
                     else :
@@ -270,7 +270,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["service_logo"]["name"])) :
-                    $image = upload_picture("service_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("service_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["service_logo"] = $image["file_name"];
                     else :
@@ -279,7 +279,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["reference_logo"]["name"])) :
-                    $image = upload_picture("reference_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("reference_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["reference_logo"] = $image["file_name"];
                     else :
@@ -288,7 +288,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["about_logo"]["name"])) :
-                    $image = upload_picture("about_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("about_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["about_logo"] = $image["file_name"];
                     else :
@@ -297,7 +297,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["gallery_logo"]["name"])) :
-                    $image = upload_picture("gallery_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("gallery_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["gallery_logo"] = $image["file_name"];
                     else :
@@ -306,7 +306,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["product_logo"]["name"])) :
-                    $image = upload_picture("product_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("product_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["product_logo"] = $image["file_name"];
                     else :
@@ -315,7 +315,7 @@ class Settings extends MY_Controller
                     endif;
                 endif;
                 if (!empty($_FILES["product_detail_logo"]["name"])) :
-                    $image = upload_picture("product_detail_logo", "uploads/$this->viewFolder");
+                    $image = upload_picture("product_detail_logo", "uploads/$this->viewFolder",[],"*");
                     if ($image["success"]) :
                         $data["product_detail_logo"] = $image["file_name"];
                     else :

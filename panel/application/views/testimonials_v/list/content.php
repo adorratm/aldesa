@@ -27,8 +27,7 @@
                     <th class="order"><i class="fa fa-reorder"></i></th>
                     <th class="w50">#id</th>
                     <th>Başlık</th>
-                    <th>Ad Soyad</th>
-                    <th>Mesaj</th>
+                    <th>Açıklama</th>
                     <th>Dil</th>
                     <th>Durumu</th>
                     <th>Oluşturulma Tarihi</th>

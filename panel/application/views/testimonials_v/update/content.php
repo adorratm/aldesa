@@ -1,16 +1,16 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <form id="updateTestimonial" onsubmit="return false" method="post" enctype="multipart/form-data">
-    <div class="row">
+    <div class="row d-none">
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="form-group">
                 <label>Ad Soyad</label>
-                <input class="form-control form-control-sm rounded-0" placeholder="Ad Soyad" name="full_name" value="<?= !empty($item->full_name) ? $item->full_name : null; ?>" required>
+                <input disabled class="form-control form-control-sm rounded-0" placeholder="Ad Soyad" name="full_name" value="<?= !empty($item->full_name) ? $item->full_name : null; ?>" required>
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="form-group">
                 <label>Şirket Adı</label>
-                <input class="form-control form-control-sm rounded-0" placeholder="Şirket Adı" name="company" value="<?= !empty($item->company) ? $item->company : null; ?>" required>
+                <input disabled class="form-control form-control-sm rounded-0" placeholder="Şirket Adı" name="company" value="<?= !empty($item->company) ? $item->company : null; ?>" required>
             </div>
         </div>
     </div>
@@ -18,7 +18,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <div class="form-group">
                 <label>Başlık</label>
-                <input class="form-control form-control-sm rounded-0" placeholder="Başlık" name="title" value="<?= !empty($item->company) ? $item->title : null; ?>" required>
+                <input class="form-control form-control-sm rounded-0" placeholder="Başlık" name="title" value="<?= !empty($item->title) ? $item->title : null; ?>" required>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <div class="form-group">
                 <label>Ziyaretçi Notu</label>
-                <textarea class="form-control form-control-sm rounded-0 tinymce" name="content" placeholder="Bizimle ilgili mesaj..." required><?= !empty($item->content) ? $item->content : null; ?></textarea>
+                <textarea class="form-control form-control-sm rounded-0 tinymce" name="content" placeholder="Açıklama..." required><?= !empty($item->content) ? $item->content : null; ?></textarea>
             </div>
         </div>
     </div>

@@ -47,7 +47,7 @@
                     <option value="<?=$value->code?>" <?=($item->lang == $value->code ? "selected" : null)?>><?=$value->name?> (<?=$value->code?>)</option>
                 <?php endforeach?>
             </select>
-            <input type="hidden" name="lang" value="tr" readonly>
+            <input type="hidden" name="lang" value="<?=$item->lang?>" readonly>
         </div>
     </div>
     <button data-url="<?= base_url("settings/update/$item->id"); ?>" type="button" class="btn btn-sm btn-outline-primary rounded-0 btnUpdate">Güncelle</button>

@@ -90,6 +90,7 @@ $lang['viewReference'] = 'Bayi İncele';
 $lang['viewProduct'] = 'Ürünü İncele';
 $lang['viewProducts'] = 'Tüm Ürünler';
 $lang['blog'] = 'Blog';
+$lang['whyChooseUs'] = "Neden ALDESA Otogaz Sistemleri?";
 $lang['viewBlog'] = 'Blog İncele';
 $lang['viewGallery'] = 'Galeriyi İncele';
 $lang['viewItem'] = 'İNCELE';

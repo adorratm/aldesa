@@ -117,6 +117,10 @@
     <noscript>
         <link rel="stylesheet" type="text/css" href="<?= asset_url("public/css/meanmenu.css") ?>">
     </noscript>
+    <link rel="preload" type="text/css" href="<?= asset_url("public/css/magnific-popup.css") ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" type="text/css" href="<?= asset_url("public/css/magnific-popup.css") ?>">
+    </noscript>
 
     <link rel="preload" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
@@ -1001,9 +1005,18 @@
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
+            position: relative;
         }
 
-        .slider-item::before {
+        .slider-item .container{
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+            z-index: 1;
+        }
+
+        .slider-item::after {
             content: '';
             position: absolute;
             top: 0;
@@ -4747,10 +4760,6 @@
             margin-bottom: 30px;
         }
 
-        .contact-form .section-title p {
-            max-width: 500px;
-        }
-
         .contact-form .form-group {
             margin-bottom: 25px;
             position: relative;
@@ -7475,6 +7484,9 @@
         }
         .input-group .btn{
             z-index: unset;
+        }
+        .input-group>.form-control:focus, .input-group>.form-select:focus{
+            z-index: 1;
         }
     </style>
 

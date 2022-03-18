@@ -1,16 +1,16 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <form id="createTestimonial" onsubmit="return false" method="post" enctype="multipart/form-data">
-    <div class="row">
+    <div class="row d-none">
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="form-group">
                 <label>Ad Soyad</label>
-                <input class="form-control form-control-sm rounded-0" placeholder="Ad Soyad" name="full_name" required>
+                <input disabled class="form-control form-control-sm rounded-0" placeholder="Ad Soyad" name="full_name" required>
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="form-group">
                 <label>Şirket Adı</label>
-                <input class="form-control form-control-sm rounded-0" placeholder="Şirket Adı" name="company" required>
+                <input disabled class="form-control form-control-sm rounded-0" placeholder="Şirket Adı" name="company" required>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <div class="form-group">
                 <label>Açıklama</label>
-                <textarea class="form-control form-control-sm rounded-0 tinymce" name="content" placeholder="Bizimle ilgili mesaj..." required></textarea>
+                <textarea class="form-control form-control-sm rounded-0 tinymce" name="content" placeholder="Açıklama..." required></textarea>
             </div>
         </div>
     </div>

@@ -61,6 +61,7 @@ $lang['chooseNow'] = "Hemen Seçin.";
 $lang['changeProduct'] = "Ürünü Değiştirin";
 $lang['notSelectedYet'] = 'Henüz Seçilmedi.';
 $lang['home'] = 'Anasayfa';
+$lang['whyChooseUs'] = "Neden ALDESA Otogaz Sistemleri?";
 $lang['welcomeMessage'] = 'Hoşgeldiniz. ';
 $lang['emptyWishlist'] = 'İstek Listemi Temizle';
 $lang['phone_1'] = 'Telefon 1';
