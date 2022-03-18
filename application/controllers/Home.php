@@ -414,7 +414,7 @@ class Home extends MY_Controller
         $this->viewData->offset = $offset;
         $this->viewData->per_page = $config['per_page'];
         $this->viewData->total_rows = $config['total_rows'];
-        $this->viewData->blog_category = $category;
+        $this->viewData->category = $category;
         $this->viewData->blogs = (!empty($seo_url) && !is_numeric($seo_url) ? (!empty($search) ? $this->general_model->get_all("blogs", null, null, ['category_id' => $category_id, "isActive" => 1, "lang" => $this->viewData->lang], ["title" =>  $search, "content" =>  $search, "createdAt" => $search, "updatedAt" =>  $search], [], [$config["per_page"], $offset]) : $this->general_model->get_all("blogs", null, null, ['category_id' => $category_id, "isActive" => 1, "lang" => $this->viewData->lang], [], [], [$config["per_page"], $offset])) : (!empty($search) ? $this->general_model->get_all("blogs", null, null, ["isActive" => 1, "lang" => $this->viewData->lang], ["title" =>  $search, "content" =>  $search, "createdAt" =>  $search, "updatedAt" =>  $search], [], [$config["per_page"], $offset]) : $this->general_model->get_all("blogs", null, null, ["isActive" => 1, "lang" => $this->viewData->lang], [], [], [$config["per_page"], $offset])));
         $this->viewData->categories = $this->general_model->get_all("blog_categories", null, "id DESC", ["isActive" => 1]);
         $this->viewData->latestBlogs = (!empty($seo_url) && !is_numeric($seo_url) ? $this->general_model->get_all("blogs", null, "id DESC", ['category_id' => $category_id, "isActive" => 1, "lang" => $this->viewData->lang], [], [], [5]) : $this->general_model->get_all("blogs", null, "id DESC", ["isActive" => 1, "lang" => $this->viewData->lang], [], [], [5]));
@@ -446,7 +446,7 @@ class Home extends MY_Controller
             $this->viewData->category = $this->general_model->get("blog_categories", null, ["id" => $this->viewData->blog->category_id, "isActive" => 1, "lang" => $this->viewData->lang]);
         endif;
         $this->viewData->categories = $this->general_model->get_all("blog_categories", null, "id DESC", ["isActive" => 1, "lang" => $this->viewData->lang]);
-        $this->viewData->latestBlog = (!empty($this->viewData->blog->category_id) ? $this->general_model->get_all("blogs", null, "id DESC", ['category_id' => $this->viewData->blogs->category_id, "isActive" => 1, "lang" => $this->viewData->lang], [], [], [5]) : $this->general_model->get_all("blogs", null, "id DESC", ["isActive" => 1, "lang" => $this->viewData->lang], [], [], [5]));
+        $this->viewData->latestBlog = (!empty($this->viewData->blog->category_id) ? $this->general_model->get_all("blogs", null, "id DESC", ['category_id' => $this->viewData->blog->category_id, "isActive" => 1, "lang" => $this->viewData->lang], [], [], [5]) : $this->general_model->get_all("blogs", null, "id DESC", ["isActive" => 1, "lang" => $this->viewData->lang], [], [], [5]));
 
         $this->viewData->meta_title = strto("lower|upper", $this->viewData->blog->title) . " - " . $this->viewData->settings->company_name;
         $this->viewData->meta_desc  = clean(str_replace("”", "\"", stripslashes($this->viewData->blog->content)));

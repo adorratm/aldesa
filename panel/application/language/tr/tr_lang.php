@@ -89,6 +89,7 @@ $lang['viewService'] = 'İncele';
 $lang['viewReference'] = 'Bayi İncele';
 $lang['viewProduct'] = 'Ürünü İncele';
 $lang['viewProducts'] = 'Tüm Ürünler';
+$lang['blog'] = 'Blog';
 $lang['viewBlog'] = 'Blog İncele';
 $lang['viewGallery'] = 'Galeriyi İncele';
 $lang['viewItem'] = 'İNCELE';

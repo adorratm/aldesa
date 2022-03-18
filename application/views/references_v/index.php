@@ -34,7 +34,9 @@
                             <h3><?= lang("chooseCountry") ?></h3>
                             <select class="form-control form-control-lg rounded-0" onchange="$('.searchReference').click()" name="country" id="country">
                                 <?php foreach ($countries as $key => $value) : ?>
-                                    <option value="<?= $value->name ?>"><?= $value->name ?></option>
+                                    <?php if ($value->name != "Turkey") : ?>
+                                        <option value="<?= $value->name ?>"><?= $value->name ?></option>
+                                    <?php endif ?>
                                 <?php endforeach ?>
                             </select>
                         </div>
@@ -822,7 +824,6 @@
                                             '</a>' +
                                             '<div class="product-content">' +
                                             '<h3 class="text-center"> <a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' + reference.title + '</a></h3>' +
-                                            '<span class="d-block"><a class="text-secondary" rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="<?= !empty($category->title) ? $category->title : null ?>"><i class="fa fa-folder"></i> <?= !empty($category->title) ? $category->title : null ?></a></span>' +
                                             '<div class="my-3">' +
                                             reference.content +
                                             '</div></div></div></div>' +
@@ -865,7 +866,7 @@
             let country = "Turkey";
             <?php if (!empty($category) && $category->showMap) : ?>
                 country = "Turkey";
-            <?php else:?>
+            <?php else : ?>
                 country = $("#country").val();
             <?php endif ?>
             $.post("<?= asset_url("home/references") ?>", {
@@ -894,7 +895,6 @@
                                 '</a>' +
                                 '<div class="product-content">' +
                                 '<h3 class="text-center"> <a rel="dofollow" onclick="event.preventDefault()" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="' + reference.title + '">' + reference.title + '</a></h3>' +
-                                '<span class="d-block"><a class="text-secondary" rel="dofollow" href="<?= base_url(lang("routes_references") . "/" . (!empty($category) ? $category->seo_url : null)) ?>" title="<?= !empty($category->title) ? $category->title : null ?>"><i class="fa fa-folder"></i> <?= !empty($category->title) ? $category->title : null ?></a></span>' +
                                 '<div class="my-3">' +
                                 reference.content +
                                 '</div></div></div></div>' +
